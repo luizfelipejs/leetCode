@@ -35,65 +35,18 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
   int carryOut = 0; 
   int sumNodes = 0; 
 
-  while (list1Element != NULL && list2Element != NULL) { 
-    sumNodes = list1Element->val + list2Element->val + carryOut; 
+  while (list1Element != NULL || list2Element != NULL) { 
+    int n1 = (list1Element != NULL) ? list1Element->val : 0; 
+    int n2 = (list2Element != NULL) ? list2Element->val : 0; 
+    
+    sumNodes = n1 + n2 + carryOut; 
 
-    if(sumNodes < 10) { 
-        solutionList = insertNodeOnTop(solutionList, sumNodes);  
-        carryOut = 0; 
-    } else { 
-        if (sumNodes % 10 == 0) { 
-            carryOut = sumNodes / 10; 
-            solutionList = insertNodeOnTop(solutionList, 0); 
-        } else { 
-            carryOut = (sumNodes - (sumNodes % 10)) / 10; 
-            solutionList = insertNodeOnTop(solutionList, sumNodes % 10); 
-        }
-    }
+    carryOut = sumNodes / 10; 
+    solutionList = insertNodeOnTop(solutionList, sumNodes % 10); 
 
-    list1Element = list1Element->next; 
-    list2Element = list2Element->next;  
+    list1Element = (list1Element != NULL) ? list1Element->next : NULL; 
+    list2Element = (list2Element != NULL) ? list2Element->next : NULL;  
   }
-
-  while (list1Element != NULL && list2Element == NULL) { 
-    sumNodes = list1Element->val + carryOut; 
-
-    if(sumNodes < 10) { 
-        solutionList = insertNodeOnTop(solutionList, sumNodes);  
-        carryOut = 0; 
-    } else { 
-        if (sumNodes % 10 == 0) { 
-            carryOut = sumNodes / 10; 
-            solutionList = insertNodeOnTop(solutionList, 0); 
-        } else { 
-            carryOut = (sumNodes - (sumNodes % 10)) / 10; 
-            solutionList = insertNodeOnTop(solutionList, sumNodes % 10); 
-        }
-    }
-
-    list1Element = list1Element->next;  
-  }
-
-
-  while (list1Element == NULL && list2Element != NULL) { 
-    sumNodes = list2Element->val + carryOut; 
-
-    if(sumNodes < 10) { 
-        solutionList = insertNodeOnTop(solutionList, sumNodes);  
-        carryOut = 0; 
-    } else { 
-        if (sumNodes % 10 == 0) { 
-            carryOut = sumNodes / 10; 
-            solutionList = insertNodeOnTop(solutionList, 0); 
-        } else { 
-            carryOut = (sumNodes - (sumNodes % 10)) / 10; 
-            solutionList = insertNodeOnTop(solutionList, sumNodes % 10); 
-        }
-    }
-
-    list2Element = list2Element->next;  
-  }
-
 
   if (carryOut > 0 && (list1Element == NULL && list2Element == NULL)) { 
     solutionList = insertNodeOnTop(solutionList, carryOut); 
